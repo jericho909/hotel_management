@@ -22,7 +22,7 @@ public class UserDao {
         ArrayList<User> userArrayList = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM public.user";
+            String query = "SELECT * FROM public.users";
             ResultSet rs = this.connection.createStatement().executeQuery(query);
 
             while (rs.next()){
@@ -37,8 +37,7 @@ public class UserDao {
 
     public User fetchUserWithLoginInfo(String username, String password){
         User user = null;
-
-        String query = "SELECT * FROM public.user WHERE user_name = ? AND user_password = ?";
+        String query = "SELECT * FROM public.users WHERE user_name = ? AND user_password = ?";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

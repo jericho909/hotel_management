@@ -22,11 +22,21 @@ public class Helper {
         JOptionPane.showMessageDialog(null, str, "ERROR", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static void showErrorMessage(String str, String title){
+    public static void showCustomMessage(String str, String title){
         JOptionPane.showMessageDialog(null, str, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static JPanel isFieldsEmpty(){
+    public static boolean isFieldEmpty(JTextField field){
+        return field.getText().trim().isEmpty();
+    }
 
+    public static boolean emptyFieldChecker(JTextField[] fieldList){
+        for (JTextField textField: fieldList){
+            if (isFieldEmpty(textField)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -25,4 +25,8 @@ public class Helper {
     public static void showErrorMessage(String str, String title){
         JOptionPane.showMessageDialog(null, str, title, JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public static JPanel isFieldsEmpty(){
+
+    }
 }

@@ -39,4 +39,15 @@ public class Helper {
 
         return false;
     }
+
+    public static boolean confirm(String str){
+        String msg;
+        if (str.equals("Yes")){
+            msg = "Please confirm deletion.";
+        } else {
+            msg = str;
+        }
+
+        return JOptionPane.showConfirmDialog(null, msg,"Are you sure?", JOptionPane.YES_NO_OPTION) == 0;
+    }
 }

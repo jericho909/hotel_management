@@ -131,7 +131,6 @@ public class UserDao {
         } catch (SQLException e){
 
         }
-        System.out.println(user.toString());
         return user;
     }
 }

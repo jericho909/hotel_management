@@ -35,17 +35,22 @@ public class AdminView extends Layout {
 
         this.lbl_welcome.setText("Welcome, " + this.user.getUser_name() + ".");
 
-        loadUserTable();
-        loadMenuOptions();
+        initializeUserTable();
+        initializeUserMenuOptions();
+
+        btn_logout.addActionListener(e -> {
+            LoginView loginView = new LoginView();
+            dispose();
+        });
     }
 
-    private void loadUserTable(){
+    private void initializeUserTable(){
         Object[] columnsOfUserTable = {"User ID", "User Name", "User Role"};
         ArrayList<Object[]> userList = this.userManager.getForTable(columnsOfUserTable.length);
         this.createTable(this.default_tbl_user, this.tbl_user, columnsOfUserTable, userList);
     }
 
-    private void loadMenuOptions(){
+    private void initializeUserMenuOptions(){
         tableRowSelect(this.tbl_user);
 
         this.user_menu = new JPopupMenu();
@@ -55,8 +60,8 @@ public class AdminView extends Layout {
             userAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadUserTable();
-                    loadMenuOptions();
+                    initializeUserTable();
+                    initializeUserMenuOptions();
                 }
             });
         });
@@ -70,8 +75,8 @@ public class AdminView extends Layout {
             userAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadUserTable();
-                    loadMenuOptions();
+                    initializeUserTable();
+                    initializeUserMenuOptions();
                 }
             });
         });
@@ -82,8 +87,8 @@ public class AdminView extends Layout {
                 System.out.println(selectedUserId);
                 if (this.userManager.deleteUser(selectedUserId)){
                     Helper.showCustomMessage("User deleted.", "Operation successful.");
-                    loadUserTable();
-                    loadMenuOptions();
+                    initializeUserTable();
+                    initializeUserMenuOptions();
                 } else {
                     Helper.showCustomMessage("User cancelled operation.", "Aborted by user.");
                 }

@@ -23,7 +23,7 @@ public class UserDao {
             ResultSet rs = this.connection.createStatement().executeQuery(query);
 
             while (rs.next()){
-                userArrayList.add(convertDatabaseValueToClass(rs));
+                userArrayList.add(convertDatabaseValueToUser(rs));
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class UserDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()){
-                user = this.convertDatabaseValueToClass(rs);
+                user = this.convertDatabaseValueToUser(rs);
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class UserDao {
         return user;
     }
 
-    public User convertDatabaseValueToClass(ResultSet rs) throws SQLException {
+    public User convertDatabaseValueToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setUser_name(rs.getString("user_name"));
@@ -126,7 +126,7 @@ public class UserDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()){
-                user = this.convertDatabaseValueToClass(rs);
+                user = this.convertDatabaseValueToUser(rs);
             }
         } catch (SQLException e){
 

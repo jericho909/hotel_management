@@ -35,8 +35,8 @@ public class LoginView extends Layout {
                         AdminView adminView = new AdminView(loginUser);
                         dispose();
                     } else {
-                        //UserView userView = new UserView();
-                        //dispose();
+                        UserView userView = new UserView(loginUser);
+                        dispose();
                     }
                 }
             }

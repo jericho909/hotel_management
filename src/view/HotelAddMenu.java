@@ -5,6 +5,7 @@ import core.Helper;
 import entities.Hotel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class HotelAddMenu extends Layout{
     private JPanel container;
@@ -44,16 +45,16 @@ public class HotelAddMenu extends Layout{
 
         this.add(container);
 
-        this.layoutStart(1000,750);
+        this.layoutStart((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 200, 1000);
 
         btn_save.addActionListener(e -> {
-            JTextField[] fields = {fld_hotel_name,fld_hotel_city,fld_hotel_adress,fld_hotel_email,fld_hotel_phone,fld_hotel_star};
+            JTextField[] fields = {fld_hotel_name,fld_hotel_city,fld_hotel_adress,fld_hotel_email,fld_hotel_phone,
+                    fld_hotel_star};
 
             boolean result = false;
             if (Helper.emptyFieldChecker(fields)){
                 Helper.showErrorMessage("Please fill all the fields.");
             } else {
-
                 result = this.hotelManager.saveHotel(new Hotel(fld_hotel_name.getText(), fld_hotel_city.getText(),
                         fld_hotel_adress.getText(),fld_hotel_email.getText(), fld_hotel_phone.getText(),
                         fld_hotel_star.getText(), check_freeparking.isSelected(), check_freewifi.isSelected(),

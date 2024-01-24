@@ -109,7 +109,7 @@
           <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have free parking?"/>
+          <text value="Free parking:"/>
         </properties>
       </component>
       <component id="b31d5" class="javax.swing.JCheckBox" binding="check_freeparking">
@@ -125,7 +125,7 @@
           <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have free wifi?"/>
+          <text value="Free wifi:"/>
         </properties>
       </component>
       <component id="ec7cd" class="javax.swing.JLabel" binding="lbl_pool">
@@ -133,7 +133,7 @@
           <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have a swimming pool?"/>
+          <text value="Swimming pool:"/>
         </properties>
       </component>
       <component id="8bb81" class="javax.swing.JLabel" binding="lbl_gym">
@@ -141,7 +141,7 @@
           <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have a gym?"/>
+          <text value="Gym:"/>
         </properties>
       </component>
       <component id="f89f8" class="javax.swing.JLabel" binding="lbl_concierge">
@@ -149,7 +149,7 @@
           <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have a concierge service?"/>
+          <text value="Concierge service:"/>
         </properties>
       </component>
       <component id="8dfe7" class="javax.swing.JLabel" binding="lbl_spa">
@@ -157,7 +157,7 @@
           <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have a spa?"/>
+          <text value="Spa:"/>
         </properties>
       </component>
       <component id="74fbf" class="javax.swing.JLabel" binding="lbl_roomservice">
@@ -165,7 +165,7 @@
           <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Does the hotel have 7/24 room service?"/>
+          <text value="7/24 room service:"/>
         </properties>
       </component>
       <component id="c71f9" class="javax.swing.JCheckBox" binding="check_freewifi">

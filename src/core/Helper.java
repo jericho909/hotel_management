@@ -40,6 +40,15 @@ public class Helper {
         return false;
     }
 
+    public static boolean emptyCheckboxChecker(JCheckBox[] checkBoxes){
+        for (JCheckBox checkBox: checkBoxes){
+            if (!checkBox.isSelected()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean confirm(String str){
         String msg;
         if (str.equals("Yes")){

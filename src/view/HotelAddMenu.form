@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.HotelAddMenu">
+  <grid id="27dc6" binding="container" layout-manager="GridLayoutManager" row-count="20" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="623"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="4072" class="javax.swing.JLabel" binding="lbl_hotel_name">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel Name:"/>
+        </properties>
+      </component>
+      <component id="541a1" class="javax.swing.JTextField" binding="fld_hotel_name">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="9c4fd" class="javax.swing.JLabel" binding="lbl_hotel_city">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel City:"/>
+        </properties>
+      </component>
+      <component id="a807c" class="javax.swing.JTextField" binding="fld_hotel_city">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="b04ca" class="javax.swing.JLabel" binding="lbl_hotel_adress">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel Adress:"/>
+        </properties>
+      </component>
+      <component id="1d14" class="javax.swing.JLabel" binding="lbl_hotel_email">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel E-Mail:"/>
+        </properties>
+      </component>
+      <component id="f8453" class="javax.swing.JTextField" binding="fld_hotel_adress">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="4a297" class="javax.swing.JTextField" binding="fld_hotel_email">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="521ce" class="javax.swing.JLabel" binding="lbl_hotel_phone">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel Phone:"/>
+        </properties>
+      </component>
+      <component id="ea6b5" class="javax.swing.JTextField" binding="fld_hotel_phone">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="fb4d4" class="javax.swing.JLabel" binding="lbl_hotel_star">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hotel Star Rating:"/>
+        </properties>
+      </component>
+      <component id="750a7" class="javax.swing.JTextField" binding="fld_hotel_star">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="e49" class="javax.swing.JLabel" binding="lbl_freeparking">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have free parking?"/>
+        </properties>
+      </component>
+      <component id="b31d5" class="javax.swing.JCheckBox" binding="check_freeparking">
+        <constraints>
+          <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="ceb65" class="javax.swing.JLabel" binding="lbl_freewifi">
+        <constraints>
+          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have free wifi?"/>
+        </properties>
+      </component>
+      <component id="ec7cd" class="javax.swing.JLabel" binding="lbl_pool">
+        <constraints>
+          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have a swimming pool?"/>
+        </properties>
+      </component>
+      <component id="8bb81" class="javax.swing.JLabel" binding="lbl_gym">
+        <constraints>
+          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have a gym?"/>
+        </properties>
+      </component>
+      <component id="f89f8" class="javax.swing.JLabel" binding="lbl_concierge">
+        <constraints>
+          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have a concierge service?"/>
+        </properties>
+      </component>
+      <component id="8dfe7" class="javax.swing.JLabel" binding="lbl_spa">
+        <constraints>
+          <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have a spa?"/>
+        </properties>
+      </component>
+      <component id="74fbf" class="javax.swing.JLabel" binding="lbl_roomservice">
+        <constraints>
+          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Does the hotel have 7/24 room service?"/>
+        </properties>
+      </component>
+      <component id="c71f9" class="javax.swing.JCheckBox" binding="check_freewifi">
+        <constraints>
+          <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="60227" class="javax.swing.JCheckBox" binding="check_pool">
+        <constraints>
+          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="17e05" class="javax.swing.JCheckBox" binding="check_gym">
+        <constraints>
+          <grid row="15" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="56cd7" class="javax.swing.JCheckBox" binding="check_concierge">
+        <constraints>
+          <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="e197b" class="javax.swing.JCheckBox" binding="check_spa">
+        <constraints>
+          <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <component id="1eb9" class="javax.swing.JCheckBox" binding="check_roomservice">
+        <constraints>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Yes"/>
+        </properties>
+      </component>
+      <hspacer id="3b1c7">
+        <constraints>
+          <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="b8284" class="javax.swing.JButton" binding="btn_save">
+        <constraints>
+          <grid row="19" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="SAVE"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

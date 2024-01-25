@@ -1,16 +1,12 @@
 package view;
 
-import business.HotelManager;
-import business.TypeManager;
-import business.UserManager;
+import business.*;
 import entities.Hotel;
 import entities.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -18,11 +14,15 @@ import java.util.ArrayList;
 public class UserView extends Layout{
     private DefaultTableModel default_table_hotel = new DefaultTableModel();
     private DefaultTableModel default_table_types = new DefaultTableModel();
+    private DefaultTableModel default_table_season = new DefaultTableModel();
+    private DefaultTableModel default_table_rooms = new DefaultTableModel();
     private HotelManager hotelManager;
     private Hotel hotel;
     private User user;
     private UserManager userManager;
     private TypeManager typeManager;
+    private SeasonManager seasonManager;
+    private RoomManager roomManager;
     private JPanel container;
     private JPanel pnl_top;
     private JButton btn_logout;
@@ -36,10 +36,24 @@ public class UserView extends Layout{
     private JTable tbl_types;
     private JScrollPane scl_types;
     private JButton btn_addtype;
+    private JPanel pnl_hotel_top;
+    private JPanel pnl_type_top;
+    private JButton btn_addseason;
+    private JPanel pnl_season;
+    private JScrollPane scl_seasons;
+    private JTable tbl_season;
+    private JPanel pnl_season_top;
+    private JTable tbl_rooms;
+    private JPanel pnl_rooms;
+    private JScrollPane scl_rooms;
+    private JPanel pnl_rooms_top;
+    private JButton btn_addroom;
 
     public UserView(User user) {
+        this.seasonManager = new SeasonManager();
         this.typeManager = new TypeManager();
         this.hotelManager = new HotelManager();
+        this.roomManager = new RoomManager();
         this.user = user;
         this.add(container);
         layoutStart((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(),(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()));
@@ -52,6 +66,8 @@ public class UserView extends Layout{
 
         initializeHotelTable();
         initializeTypesTable();
+        initializeSeasonsTable();
+        initializeRoomsTable();
 
         btn_logout.addActionListener(e -> {
             LoginView loginView = new LoginView();
@@ -70,6 +86,25 @@ public class UserView extends Layout{
 
         btn_addtype.addActionListener(e -> {
             TypeAddMenu typeAddMenu = new TypeAddMenu();
+            typeAddMenu.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    initializeTypesTable();
+                }
+            });
+        });
+        btn_addseason.addActionListener(e -> {
+            SeasonAddMenu seasonAddMenu = new SeasonAddMenu();
+            seasonAddMenu.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    initializeSeasonsTable();
+                }
+            });
+        });
+
+        btn_addroom.addActionListener(e -> {
+            RoomAddMenu roomAddMenu = new RoomAddMenu();
         });
     }
 
@@ -78,14 +113,30 @@ public class UserView extends Layout{
                 "Hotel Star", "Hotel Free Parking", "Hotel Free Wifi", "Hotel Swimming Pool", "Hotel Gym",
                 "Hotel Concierge Service", "Hotel Spa", "Hotel 7/24 Room Service"};
 
-        ArrayList<Object[]> hotelList = this.hotelManager.getForTable(columnsOfHotelTable.length);
+        ArrayList<Object[]> hotelList = this.hotelManager.getForTable(columnsOfHotelTable.length, this.hotelManager.fetchAllHotels());
         this.createTable(this.default_table_hotel, this.tbl_hotel, columnsOfHotelTable, hotelList);
     }
 
     private void initializeTypesTable(){
         Object[] columnsOfTypesTable = {"Type ID", "Hotel Name", "Hotel Types"};
 
-        ArrayList<Object[]> typesList = this.typeManager.getForTable(columnsOfTypesTable.length);
+        ArrayList<Object[]> typesList = this.typeManager.getForTable(columnsOfTypesTable.length, this.typeManager.fetchAllTypes());
         this.createTable(this.default_table_types, this.tbl_types, columnsOfTypesTable, typesList);
+    }
+
+    private void initializeSeasonsTable(){
+        Object[] columnsOfSeasonsTable = {"Season ID", "Hotel Name", "Season Start", "Season End"};
+
+        ArrayList<Object[]> seasonList = this.seasonManager.getForTable(columnsOfSeasonsTable.length, this.seasonManager.fetchAllSeasons());
+        this.createTable(this.default_table_season, this.tbl_season, columnsOfSeasonsTable, seasonList);
+    }
+
+    private void initializeRoomsTable(){
+        Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season Start",
+                "Room Adult Price", "Room Child Price", "Room Bed Count", "Room TV", "Room Minibar",
+                "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
+
+        ArrayList<Object[]> roomList = this.roomManager.getForTable(columnsOfRoomsTable.length, this.roomManager.fetchAllRooms());
+        this.createTable(this.default_table_rooms, this.tbl_rooms, columnsOfRoomsTable, roomList);
     }
 }

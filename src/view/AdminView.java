@@ -1,11 +1,14 @@
 package view;
 
 import business.UserManager;
+import core.ComboItem;
 import core.Helper;
 import entities.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -19,9 +22,14 @@ public class AdminView extends Layout {
     private JLabel lbl_welcome;
     private JPanel pnl_main;
     private JTable tbl_user;
+    private JComboBox cmb_roles;
+    private JButton btn_search;
+    private JButton btn_clear;
+    private JLabel lbl_search;
     private DefaultTableModel default_tbl_user = new DefaultTableModel();
     private JPopupMenu user_menu;
     private UserManager userManager;
+    Object[] columnsOfUserTable;
 
     public AdminView(User user) {
         this.userManager = new UserManager();
@@ -35,18 +43,21 @@ public class AdminView extends Layout {
 
         this.lbl_welcome.setText("Welcome, " + this.user.getUser_name() + ".");
 
-        initializeUserTable();
+        initializeUserTable(null);
         initializeUserMenuOptions();
 
         btn_logout.addActionListener(e -> {
             LoginView loginView = new LoginView();
             dispose();
         });
+
     }
 
-    private void initializeUserTable(){
-        Object[] columnsOfUserTable = {"User ID", "User Name", "User Role"};
-        ArrayList<Object[]> userList = this.userManager.getForTable(columnsOfUserTable.length);
+    private void initializeUserTable(ArrayList<Object[]> userList){
+        this.columnsOfUserTable = new Object[]{"User ID", "User Name", "User Role"};
+        if (userList == null){
+            userList = this.userManager.getForTable(columnsOfUserTable.length, this.userManager.fetchAllUsers());
+        }
         this.createTable(this.default_tbl_user, this.tbl_user, columnsOfUserTable, userList);
     }
 
@@ -60,7 +71,7 @@ public class AdminView extends Layout {
             userAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    initializeUserTable();
+                    initializeUserTable(null);
                     initializeUserMenuOptions();
                 }
             });
@@ -75,7 +86,7 @@ public class AdminView extends Layout {
             userAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    initializeUserTable();
+                    initializeUserTable(null);
                     initializeUserMenuOptions();
                 }
             });
@@ -87,7 +98,7 @@ public class AdminView extends Layout {
                 System.out.println(selectedUserId);
                 if (this.userManager.deleteUser(selectedUserId)){
                     Helper.showCustomMessage("User deleted.", "Operation successful.");
-                    initializeUserTable();
+                    initializeUserTable(null);
                     initializeUserMenuOptions();
                 } else {
                     Helper.showCustomMessage("User cancelled operation.", "Aborted by user.");
@@ -95,5 +106,20 @@ public class AdminView extends Layout {
             }
         });
         this.tbl_user.setComponentPopupMenu(user_menu);
+
+        this.btn_search.addActionListener(e -> {
+            String selectedRole = this.cmb_roles.getSelectedItem().toString().toLowerCase();
+            ArrayList<User> userListSearch = this.userManager.searchUsersByRole(selectedRole);
+
+            ArrayList<Object[]> userRowListBySearch = this.userManager.getForTable(this.columnsOfUserTable.length, userListSearch);
+            initializeUserTable(userRowListBySearch);
+
+        });
+
+        this.btn_clear.addActionListener(e -> {
+            initializeUserTable(null);
+            this.cmb_roles.setSelectedItem(null);
+        });
     }
+
 }

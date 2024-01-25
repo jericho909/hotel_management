@@ -30,10 +30,10 @@ public class HotelManager {
         return this.hotelDao.fetchAllHotels();
     }
 
-    public ArrayList<Object[]> getForTable(int size){
+    public ArrayList<Object[]> getForTable(int size, ArrayList<Hotel> list){
         ArrayList<Object[]> hotelRowList = new ArrayList<>();
 
-        for (Hotel hotel: this.fetchAllHotels()){
+        for (Hotel hotel: list){
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = hotel.getId();
@@ -61,5 +61,13 @@ public class HotelManager {
         } else {
             return "No";
         }
+    }
+
+    public ArrayList<Hotel> customQueryDatabase(String query){
+        return this.hotelDao.customQueryDatabase(query);
+    }
+
+    public int queryDatabaseForId(String hotelName){
+        return this.hotelDao.queryDatabaseForId(hotelName);
     }
 }

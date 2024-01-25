@@ -103,4 +103,41 @@ public class HotelDao {
         }
         return true;
     }
+
+
+    public ArrayList<Hotel> customQueryDatabase(String query){
+        ArrayList<Hotel> hotelArrayList = new ArrayList<>();
+
+        try {
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+
+            while (rs.next()){
+                hotelArrayList.add(convertDatabaseValueToHotel(rs));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return hotelArrayList;
+    }
+
+    public int queryDatabaseForId(String hotelName) {
+        String query = "SELECT id FROM public.hotels WHERE hotel_name = ?";
+        int id = -1; // Default value if no hotel is found
+
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, hotelName);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
 }

@@ -133,4 +133,20 @@ public class UserDao {
         }
         return user;
     }
+
+    public ArrayList<User> queryDatabase(String query){
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        try {
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+
+            while (rs.next()){
+                userArrayList.add(convertDatabaseValueToUser(rs));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return userArrayList;
+    }
 }

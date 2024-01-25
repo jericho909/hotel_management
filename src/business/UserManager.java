@@ -4,6 +4,9 @@ import core.Helper;
 import dao.UserDao;
 import entities.User;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserManager {
@@ -22,9 +25,9 @@ public class UserManager {
         return this.userDao.fetchAllUsers();
     }
 
-    public ArrayList<Object[]> getForTable(int size){
+    public ArrayList<Object[]> getForTable(int size, ArrayList<User> list){
         ArrayList<Object[]> userRowList = new ArrayList<>();
-        for (User user: this.fetchAllUsers()){
+        for (User user: list){
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = user.getId();
@@ -63,4 +66,11 @@ public class UserManager {
             return this.userDao.deleteUser(userId);
         }
     }
+
+    public ArrayList<User> searchUsersByRole(String userRole){
+        String query = "SELECT * FROM public.users WHERE user_role = '" + userRole + "';";
+        return this.userDao.queryDatabase(query);
+    }
+
+
 }

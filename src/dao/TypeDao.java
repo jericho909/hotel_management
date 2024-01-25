@@ -2,7 +2,6 @@ package dao;
 
 import core.DbConnection;
 import entities.Type;
-import entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,8 +59,8 @@ public class TypeDao {
         return true;
     }
 
-    public Type getById(int typeId){
-        Type type = null;
+    public ArrayList<Type> getByTypeId(int typeId){
+        ArrayList<Type> typeArrayList = new ArrayList<>();
         String query = "SELECT * FROM public.types WHERE id = ?";
 
         try {
@@ -71,11 +70,30 @@ public class TypeDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()){
-                type = this.convertDatabaseValueToType(rs);
+                typeArrayList.add(convertDatabaseValueToType(rs));
             }
         } catch (SQLException e){
 
         }
-        return type;
+        return typeArrayList;
+    }
+
+    public ArrayList<String> getTypesByHotelId(int hotelId){
+        ArrayList<String> typeArrayList = new ArrayList<>();
+        String query = "SELECT type_hotel_name FROM public.types WHERE hotel_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hotelId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                typeArrayList.add(rs.getString("type_hotel_name"));
+            }
+        } catch (SQLException e){
+
+        }
+        return typeArrayList;
     }
 }

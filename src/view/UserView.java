@@ -105,6 +105,12 @@ public class UserView extends Layout{
 
         btn_addroom.addActionListener(e -> {
             RoomAddMenu roomAddMenu = new RoomAddMenu();
+            roomAddMenu.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    initializeRoomsTable();
+                }
+            });
         });
     }
 
@@ -125,15 +131,15 @@ public class UserView extends Layout{
     }
 
     private void initializeSeasonsTable(){
-        Object[] columnsOfSeasonsTable = {"Season ID", "Hotel Name", "Season Start", "Season End"};
+        Object[] columnsOfSeasonsTable = {"Season ID", "Hotel Name", "Season Start", "Season End", "Season Name", "Season Rate"};
 
         ArrayList<Object[]> seasonList = this.seasonManager.getForTable(columnsOfSeasonsTable.length, this.seasonManager.fetchAllSeasons());
         this.createTable(this.default_table_season, this.tbl_season, columnsOfSeasonsTable, seasonList);
     }
 
     private void initializeRoomsTable(){
-        Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season Start",
-                "Room Adult Price", "Room Child Price", "Room Bed Count", "Room TV", "Room Minibar",
+        Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season",
+                "Room Adult Price", "Room Child Price", "Room Type","Room Bed Count", "Room TV", "Room Minibar",
                 "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
 
         ArrayList<Object[]> roomList = this.roomManager.getForTable(columnsOfRoomsTable.length, this.roomManager.fetchAllRooms());

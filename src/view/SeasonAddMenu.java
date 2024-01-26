@@ -12,7 +12,6 @@ import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class SeasonAddMenu extends Layout {
     private JComboBox cmb_hotelnames;
@@ -23,6 +22,10 @@ public class SeasonAddMenu extends Layout {
     private JLabel lbl_seasonend;
     private JFormattedTextField fmt_fld_seasonstart;
     private JFormattedTextField fmt_fld_seasonend;
+    private JTextField fld_seasonName;
+    private JTextField fld_seasonRate;
+    private JLabel lbl_seasonname;
+    private JLabel lbl_seasonRate;
     private SeasonManager seasonManager;
     private HotelManager hotelManager;
 
@@ -37,14 +40,15 @@ public class SeasonAddMenu extends Layout {
         }
 
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldEmpty(fmt_fld_seasonstart) || Helper.isFieldEmpty(fmt_fld_seasonend)){
+            if (Helper.emptyFieldChecker(new JTextField[]{fld_seasonName, fld_seasonRate, fmt_fld_seasonend, fmt_fld_seasonstart})){
                 Helper.showErrorMessage("Please fill all the fields.");
             } else {
                 boolean result = false;
                 ComboItem selectedHotel = (ComboItem) cmb_hotelnames.getSelectedItem();
                 result = this.seasonManager.saveSeason(new Season(selectedHotel.getKey(),
                         LocalDate.parse(fmt_fld_seasonstart.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        LocalDate.parse(fmt_fld_seasonend.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")) ));
+                        LocalDate.parse(fmt_fld_seasonend.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        fld_seasonName.getText(), Double.parseDouble(fld_seasonRate.getText())));
 
             }
             Helper.showCustomMessage("Added new season.", "Operation successful.");

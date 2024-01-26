@@ -1,5 +1,6 @@
 package business;
 
+import core.ComboItem;
 import core.Helper;
 import dao.TypeDao;
 import entities.Type;
@@ -27,11 +28,11 @@ public class TypeManager {
         return this.typeDao.fetchAllTypes();
     }
 
-    public ArrayList<Type> getByTypeId(int typeId){
+    public Type getById(int typeId){
         return this.typeDao.getByTypeId(typeId);
     }
 
-    public ArrayList<String> getTypesByHotelId(int hotelId){return this.typeDao.getTypesByHotelId(hotelId);}
+    public ArrayList<ComboItem> getTypesByHotelId(int hotelId){return this.typeDao.getTypesByHotelId(hotelId);}
 
     public ArrayList<Object[]> getForTable(int size, ArrayList<Type> list){
         ArrayList<Object[]> typeRowList = new ArrayList<>();

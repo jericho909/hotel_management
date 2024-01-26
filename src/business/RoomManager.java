@@ -8,9 +8,15 @@ import java.util.ArrayList;
 
 public class RoomManager {
     private final RoomDao roomDao;
+    private final HotelManager hotelManager;
+    private final TypeManager typeManager;
+    private final SeasonManager seasonManager;
 
     public RoomManager(){
         this.roomDao = new RoomDao();
+        this.hotelManager = new HotelManager();
+        this.typeManager = new TypeManager();
+        this.seasonManager = new SeasonManager();
     }
 
     public Room getById(int roomId){
@@ -36,9 +42,9 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = room.getId();
-            rowObject[i++] = room.getHotel_id();
-            rowObject[i++] = room.getRoom_hotel_type_id();
-            rowObject[i++] = room.getRoom_season_id();
+            rowObject[i++] = this.hotelManager.getById(room.getHotel_id()).getHotel_name();
+            rowObject[i++] = this.typeManager.getById(room.getRoom_hotel_type_id()).getType_hotel_name();
+            rowObject[i++] = this.seasonManager.getById(room.getRoom_season_id()).getSeason_name();
             rowObject[i++] = room.getRoom_price_adult();
             rowObject[i++] = room.getRoom_price_child();
             rowObject[i++] = room.getRoom_name();

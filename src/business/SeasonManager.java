@@ -1,5 +1,6 @@
 package business;
 
+import core.ComboItem;
 import core.Helper;
 import dao.HotelDao;
 import dao.SeasonDao;
@@ -43,8 +44,14 @@ public class SeasonManager {
             rowObject[i++] = this.hotelManager.getById(season.getHotel_id()).getHotel_name();
             rowObject[i++] = season.getSeason_start_date();
             rowObject[i++] = season.getSeason_end_date();
+            rowObject[i++] = season.getSeason_name();
+            rowObject[i++] = season.getSeason_rate();
             seasonRowList.add(rowObject);
         }
         return seasonRowList;
+    }
+
+    public ArrayList<ComboItem> getSeasonsByHotelId(int hotelId){
+        return this.seasonDao.getSeasonByHotelId(hotelId);
     }
 }

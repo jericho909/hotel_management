@@ -1,5 +1,6 @@
 package dao;
 
+import core.ComboItem;
 import core.DbConnection;
 import entities.Type;
 
@@ -59,7 +60,8 @@ public class TypeDao {
         return true;
     }
 
-    public ArrayList<Type> getByTypeId(int typeId){
+    public Type getByTypeId(int typeId){
+        Type type = null;
         ArrayList<Type> typeArrayList = new ArrayList<>();
         String query = "SELECT * FROM public.types WHERE id = ?";
 
@@ -70,17 +72,19 @@ public class TypeDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()){
-                typeArrayList.add(convertDatabaseValueToType(rs));
+                type = convertDatabaseValueToType(rs);
             }
         } catch (SQLException e){
 
         }
-        return typeArrayList;
+        return type;
     }
 
-    public ArrayList<String> getTypesByHotelId(int hotelId){
-        ArrayList<String> typeArrayList = new ArrayList<>();
-        String query = "SELECT type_hotel_name FROM public.types WHERE hotel_id = ?";
+    public ArrayList<ComboItem> getTypesByHotelId(int hotelId){
+        int id;
+        String typeName;
+        ArrayList<ComboItem> typeArrayList = new ArrayList<>();
+        String query = "SELECT id, type_hotel_name FROM public.types WHERE hotel_id = ?";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -89,7 +93,10 @@ public class TypeDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
-                typeArrayList.add(rs.getString("type_hotel_name"));
+                id = rs.getInt("id");
+                typeName = rs.getString("type_hotel_name");
+                ComboItem comboItem = new ComboItem(id, typeName);
+                typeArrayList.add(comboItem);
             }
         } catch (SQLException e){
 

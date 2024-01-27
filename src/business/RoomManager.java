@@ -1,9 +1,13 @@
 package business;
 
+import core.ComboItem;
 import core.Helper;
 import dao.RoomDao;
 import entities.Room;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RoomManager {
@@ -68,5 +72,9 @@ public class RoomManager {
         } else {
             return "No";
         }
+    }
+
+    public ArrayList<ComboItem> getRoomsByHotelId(int hotelId){
+        return this.roomDao.getRoomsByHotelId(hotelId);
     }
 }

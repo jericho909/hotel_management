@@ -46,6 +46,7 @@ public class HotelManager {
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_freeparking());
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_freewifi());
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_pool());
+            rowObject[i++] = convertBooleanValueToString(hotel.isHotel_gym());
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_concierge());
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_spa());
             rowObject[i++] = convertBooleanValueToString(hotel.isHotel_roomservice());
@@ -64,7 +65,7 @@ public class HotelManager {
     }
 
     public ArrayList<Hotel> customQueryDatabase(String query){
-        return this.hotelDao.customQueryDatabase(query);
+        return this.hotelDao.customFetchQueryDatabase(query);
     }
 
     public int queryDatabaseForId(String hotelName){

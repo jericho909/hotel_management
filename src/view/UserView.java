@@ -48,6 +48,7 @@ public class UserView extends Layout{
     private JScrollPane scl_rooms;
     private JPanel pnl_rooms_top;
     private JButton btn_addroom;
+    private JButton btn_addreservation;
 
     public UserView(User user) {
         this.seasonManager = new SeasonManager();
@@ -112,10 +113,14 @@ public class UserView extends Layout{
                 }
             });
         });
+
+        btn_addreservation.addActionListener(e -> {
+            ReservationAddMenu reservationAddMenu = new ReservationAddMenu();
+        });
     }
 
     private void initializeHotelTable(){
-        Object[] columnsOfHotelTable = {"Hotel ID", "Hotel Name", "Hotel City", "Hotel E-Mail", "Hotel Phone Number",
+        Object[] columnsOfHotelTable = {"Hotel ID", "Hotel Name", "Hotel City", "Hotel Address", "Hotel E-Mail", "Hotel Phone Number",
                 "Hotel Star", "Hotel Free Parking", "Hotel Free Wifi", "Hotel Swimming Pool", "Hotel Gym",
                 "Hotel Concierge Service", "Hotel Spa", "Hotel 7/24 Room Service"};
 

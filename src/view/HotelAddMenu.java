@@ -36,6 +36,7 @@ public class HotelAddMenu extends Layout{
     private JLabel lbl_concierge;
     private JLabel lbl_spa;
     private JLabel lbl_roomservice;
+    private JComboBox cmb_hotelStar;
     private Hotel hotel;
     private HotelManager hotelManager;
 
@@ -48,8 +49,7 @@ public class HotelAddMenu extends Layout{
         this.layoutStart((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 200, 1000);
 
         btn_save.addActionListener(e -> {
-            JTextField[] fields = {fld_hotel_name,fld_hotel_city,fld_hotel_adress,fld_hotel_email,fld_hotel_phone,
-                    fld_hotel_star};
+            JTextField[] fields = {fld_hotel_name,fld_hotel_city,fld_hotel_adress,fld_hotel_email,fld_hotel_phone};
 
             boolean result = false;
             if (Helper.emptyFieldChecker(fields)){
@@ -57,7 +57,7 @@ public class HotelAddMenu extends Layout{
             } else {
                 result = this.hotelManager.saveHotel(new Hotel(fld_hotel_name.getText(), fld_hotel_city.getText(),
                         fld_hotel_adress.getText(),fld_hotel_email.getText(), fld_hotel_phone.getText(),
-                        fld_hotel_star.getText(), check_freeparking.isSelected(), check_freewifi.isSelected(),
+                        roomStarRatingToString(cmb_hotelStar.getSelectedItem().toString()), check_freeparking.isSelected(), check_freewifi.isSelected(),
                         check_pool.isSelected(), check_gym.isSelected(), check_concierge.isSelected(),
                         check_spa.isSelected(), check_roomservice.isSelected()));
                 result = true;
@@ -68,5 +68,21 @@ public class HotelAddMenu extends Layout{
                 dispose();
             }
         });
+    }
+    private String roomStarRatingToString(String rating){
+        switch (rating){
+            case "*":
+                return "1";
+            case "**":
+                return "2";
+            case "***":
+                return "3";
+            case "****":
+                return "4";
+            case "*****":
+                return "5";
+            default:
+                return "Invalid";
+        }
     }
 }

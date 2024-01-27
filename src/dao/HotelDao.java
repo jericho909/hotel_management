@@ -105,7 +105,7 @@ public class HotelDao {
     }
 
 
-    public ArrayList<Hotel> customQueryDatabase(String query){
+    public ArrayList<Hotel> customFetchQueryDatabase(String query){
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
 
         try {

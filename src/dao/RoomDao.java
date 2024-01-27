@@ -1,5 +1,6 @@
 package dao;
 
+import core.ComboItem;
 import core.DbConnection;
 import entities.Hotel;
 import entities.Room;
@@ -59,7 +60,7 @@ public class RoomDao {
 
     public Room getById(int roomId){
         Room room = null;
-        String query = "SELECT * FROM pubkic.rooms WHERE id = ?";
+        String query = "SELECT * FROM public.rooms WHERE id = ?";
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -105,4 +106,32 @@ public class RoomDao {
         return true;
     }
 
+    public ArrayList<ComboItem> getRoomsByHotelId(int hotelId) {
+        int id;
+        String roomName;
+        String roomStr;
+        int roomStock;
+        ArrayList<ComboItem> roomArrayList = new ArrayList<>();
+        String query = "SELECT id, room_name, room_stock  FROM public.rooms WHERE hotel_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hotelId);
+
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                id = rs.getInt("id");
+                roomName = rs.getString("room_name");
+                roomStock = rs.getInt("room_stock");
+                roomStr = roomName + ": " + roomStock;
+                roomArrayList.add(new ComboItem(id, roomStr));
+
+            }
+        } catch (SQLException e) {
+
+        }
+        return roomArrayList;
+    }
 }

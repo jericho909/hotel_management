@@ -19,14 +19,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ReservationAddMenu extends Layout {
+public class ReservationAddEditMenu extends Layout {
     private JPanel container;
     private JComboBox cmb_hotels;
     private JComboBox cmb_room;
     private JFormattedTextField fmt_reservationStartDate;
     private JTextField fld_guestName;
     private JTextField fld_guestPhone;
-    private JButton btn_createReservation;
+    private JButton btn_addEditReservation;
     private JLabel lbl_hotelName;
     private JLabel lbl_room;
     private JLabel lbl_reservationStartDate;
@@ -43,8 +43,10 @@ public class ReservationAddMenu extends Layout {
     private HotelManager hotelManager;
     private RoomManager roomManager;
     private SeasonManager seasonManager;
+    private Reservation reservation;
 
-    public ReservationAddMenu() {
+    public ReservationAddEditMenu(Reservation reservation) {
+        this.reservation = reservation;
         this.reservationManager = new ReservationManager();
         this.hotelManager = new HotelManager();
         this.roomManager = new RoomManager();
@@ -52,9 +54,19 @@ public class ReservationAddMenu extends Layout {
         this.add(container);
         layoutStart(600,750);
 
+
         for (Hotel hotel: this.hotelManager.fetchAllHotels()){
             this.cmb_hotels.addItem(new ComboItem(hotel.getId(), hotel.getHotel_name()));
             cmb_hotels.setSelectedItem(null);
+        }
+
+        if (reservation != null){
+            //this.cmb_hotels.setSelectedItem(this.hotelManager.getById(this.roomManager.getById(reservation.getRoom_id()).getHotel_id()).getHotel_name());
+            //this.cmb_room.setSelectedItem(this.roomManager.getById(reservation.getRoom_id()).getRoom_name());
+            this.fld_guestName.setText(reservation.getReservation_guest_name());
+            this.fld_guestPhone.setText(reservation.getReservation_guest_phone());
+            this.fmt_reservationStartDate.setText(reservation.getReservation_start_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            this.fmt_reservationEndDate.setText(reservation.getReservation_end_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
 
         fld_child.setText("0");
@@ -76,10 +88,11 @@ public class ReservationAddMenu extends Layout {
             }
         });
 
-        btn_createReservation.addActionListener(e -> {
+        btn_addEditReservation.addActionListener(e -> {
                 ComboItem selectedRoom = (ComboItem) cmb_room.getSelectedItem();
                 int roomSize = this.roomManager.getById(selectedRoom.getKey()).getRoom_bed_count();
                 int roomStock = this.roomManager.getById(selectedRoom.getKey()).getRoom_stock();
+                ArrayList<Reservation> reservationArrayList = this.reservationManager.fetchAllReservations();
                 boolean result = false;
             if (Helper.emptyFieldChecker(new JTextField[]{fld_guestName, fld_guestPhone, fmt_reservationStartDate,
                     fmt_reservationEndDate}) || cmb_hotels.getSelectedItem() == null || cmb_room.getSelectedItem() == null){
@@ -93,29 +106,46 @@ public class ReservationAddMenu extends Layout {
                 Helper.showErrorMessage("Invalid entry.");
             } else if (Helper.calculateGuestNumber(new JTextField[]{fld_child, fld_adult}) == -1) {
                 Helper.showErrorMessage("Guests fields cannot be empty.");
+            } else if (Helper.checkDateAvailability(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), reservationArrayList)) {
+                Helper.showErrorMessage("Date not available.");
             } else if (roomStock < 1) {
                 Helper.showErrorMessage("Room out of stock.");
             } else {
                 Double roomPriceForAdult = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_adult();
                 Double roomPriceForChild = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_child();
                 Double seasonRate = this.seasonManager.getById(this.roomManager.getById(selectedRoom.getKey()).getRoom_season_id()).getSeason_rate();
-                int numberOfAdutls = Integer.parseInt(fld_adult.getText());
+                int numberOfAdults = Integer.parseInt(fld_adult.getText());
                 int numberOfChildren = Integer.parseInt(fld_child.getText());
 
-                Double totalPrice = ((numberOfAdutls * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate;
+                Double totalPrice = ((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate;
+                if (this.reservation == null){
+                    result = this.reservationManager.saveReservation(new Reservation(
+                            selectedRoom.getKey(),
+                            LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                            LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                            fld_guestName.getText(), fld_guestPhone.getText(), totalPrice));
+                } else {
+                    this.reservation.setRoom_id(selectedRoom.getKey());
+                    this.reservation.setReservation_start_date(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    this.reservation.setReservation_end_date(LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    this.reservation.setReservation_guest_name(fld_guestName.getText());
+                    this.reservation.setReservation_guest_phone(fld_guestPhone.getText());
+                    this.reservation.setReservation_total_price(totalPrice);
 
-                result = this.reservationManager.saveReservation(new Reservation(
-                        selectedRoom.getKey(),
-                        LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        fld_guestName.getText(), fld_guestPhone.getText(), totalPrice));
+                    result = this.reservationManager.editReservation(this.reservation);
+
+                    Helper.showCustomMessage("Edited reservation.", "Operation successful.");
+                    dispose();
+                }
+
+                if (result) {
+                    Helper.showCustomMessage("Added new reservation.", "Operation successful.");
+                    this.roomManager.changeStock(roomStock - 1, selectedRoom.getKey());
+                    dispose();
+                }
             }
 
-            if (result) {
-                Helper.showCustomMessage("Added new reservation.", "Operation successful.");
-                this.roomManager.changeStock(roomStock - 1, selectedRoom.getKey());
-                dispose();
-            }
         });
     }
 

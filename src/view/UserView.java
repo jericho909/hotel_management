@@ -16,6 +16,7 @@ public class UserView extends Layout{
     private DefaultTableModel default_table_types = new DefaultTableModel();
     private DefaultTableModel default_table_season = new DefaultTableModel();
     private DefaultTableModel default_table_rooms = new DefaultTableModel();
+    private DefaultTableModel default_table_reservations = new DefaultTableModel();
     private HotelManager hotelManager;
     private Hotel hotel;
     private User user;
@@ -49,12 +50,17 @@ public class UserView extends Layout{
     private JPanel pnl_rooms_top;
     private JButton btn_addroom;
     private JButton btn_addreservation;
+    private JTable tbl_reservations;
+    private JPanel pnl_reservations;
+    private JScrollPane scl_reservations;
+    private ReservationManager reservationManager;
 
     public UserView(User user) {
         this.seasonManager = new SeasonManager();
         this.typeManager = new TypeManager();
         this.hotelManager = new HotelManager();
         this.roomManager = new RoomManager();
+        this.reservationManager = new ReservationManager();
         this.user = user;
         this.add(container);
         layoutStart((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(),(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()));
@@ -69,6 +75,7 @@ public class UserView extends Layout{
         initializeTypesTable();
         initializeSeasonsTable();
         initializeRoomsTable();
+        initializeReservationsTable();
 
         btn_logout.addActionListener(e -> {
             LoginView loginView = new LoginView();
@@ -116,6 +123,13 @@ public class UserView extends Layout{
 
         btn_addreservation.addActionListener(e -> {
             ReservationAddMenu reservationAddMenu = new ReservationAddMenu();
+            reservationAddMenu.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    initializeReservationsTable();
+                    initializeRoomsTable();
+                }
+            });
         });
     }
 
@@ -149,5 +163,12 @@ public class UserView extends Layout{
 
         ArrayList<Object[]> roomList = this.roomManager.getForTable(columnsOfRoomsTable.length, this.roomManager.fetchAllRooms());
         this.createTable(this.default_table_rooms, this.tbl_rooms, columnsOfRoomsTable, roomList);
+    }
+
+    private void initializeReservationsTable(){
+        Object[] columnsOfReservationsTable = {"Reservation ID", "Room", "Start Date", "End Date", "Guest Name", "Phone", "Total Price"};
+        ArrayList<Object[]> reservationList = this.reservationManager.getForTable(columnsOfReservationsTable.length, this.reservationManager.fetchAllReservations());
+
+        this.createTable(this.default_table_reservations, this.tbl_reservations, columnsOfReservationsTable, reservationList);
     }
 }

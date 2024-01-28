@@ -33,11 +33,11 @@ public class ReservationDao {
     }
 
     public Reservation convertDatabaseValueToReservation(ResultSet rs) throws SQLException{
-        Reservation reservation = null;
+        Reservation reservation = new Reservation();
 
         reservation.setId(rs.getInt("id"));
         reservation.setRoom_id(rs.getInt("room_id"));
-        reservation.setReservation_start_date(LocalDate.parse(rs.getString("reservation_start_date")));
+        reservation.setReservation_start_date(LocalDate.parse(rs.getString("reservation_str_date")));
         reservation.setReservation_end_date(LocalDate.parse(rs.getString("reservation_end_date")));
         reservation.setReservation_guest_name(rs.getString("reservation_guest_phone"));
         reservation.setReservation_total_price(rs.getDouble("reservation_total_price"));
@@ -66,7 +66,7 @@ public class ReservationDao {
     }
 
     public boolean saveReservation(Reservation reservation){
-        String query = "INSERT INTO public.reservation (room_id, reservation_start_date, reservation_end_date, " +
+        String query = "INSERT INTO public.reservation (room_id, reservation_str_date, reservation_end_date, " +
                 "reservation_guest_name, reservation_guest_phone, reservation_total_price) VALUES (?,?,?,?,?,?)";
 
         try {

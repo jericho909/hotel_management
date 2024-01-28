@@ -1,6 +1,11 @@
 package core;
 
+import business.ReservationManager;
+import entities.Reservation;
+
 import javax.swing.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Helper {
 
@@ -71,4 +76,17 @@ public class Helper {
 
         return sum;
     }
+
+    public static boolean checkDateAvailability(LocalDate startDate, LocalDate endDate, ArrayList<Reservation> reservationArrayList) {
+
+        for (Reservation reservation : reservationArrayList) {
+            if ((startDate.isAfter(reservation.getReservation_start_date()) && startDate.isBefore(reservation.getReservation_end_date())) ||
+                    (endDate.isAfter(reservation.getReservation_start_date()) && endDate.isBefore(reservation.getReservation_end_date())) ||
+                    (startDate.isBefore(reservation.getReservation_start_date()) && endDate.isAfter(reservation.getReservation_end_date()))) {
+                return false; // Overlapping reservation found
+            }
+        }
+        return true; // No overlapping reservation found
+    }
+
 }

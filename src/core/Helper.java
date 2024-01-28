@@ -59,4 +59,16 @@ public class Helper {
 
         return JOptionPane.showConfirmDialog(null, msg,"Are you sure?", JOptionPane.YES_NO_OPTION) == 0;
     }
+
+    public static int calculateGuestNumber(JTextField[] fieldList){
+        int sum = 0;
+        if (Helper.emptyFieldChecker(fieldList)){
+            return -1;
+        }
+        for (JTextField field:fieldList){
+            sum += Integer.parseInt(field.getText());
+        }
+
+        return sum;
+    }
 }

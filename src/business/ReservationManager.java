@@ -31,6 +31,13 @@ public class ReservationManager {
 
         return this.reservationDao.saveReservation(reservation);
     }
+    public boolean editReservation(Reservation reservation){
+        if (this.getById(reservation.getId())  == null ){
+            Helper.showErrorMessage("ID not found.");
+        }
+
+        return this.reservationDao.editReservation(reservation);
+    }
 
     public boolean deleteReservation(int reservationId){
         if (this.getById(reservationId) == null){

@@ -1,7 +1,9 @@
 package view;
 
 import business.*;
+import core.Helper;
 import entities.Hotel;
+import entities.Room;
 import entities.User;
 
 import javax.swing.*;
@@ -53,7 +55,13 @@ public class UserView extends Layout{
     private JTable tbl_reservations;
     private JPanel pnl_reservations;
     private JScrollPane scl_reservations;
+    private JComboBox cmb_search_hotelName;
+    private JComboBox cmb_search_hotelCity;
+    private JTextField fld_search_startDate;
+    private JTextField fld_search_endDate;
+    private JButton btn_search;
     private ReservationManager reservationManager;
+    private JPopupMenu reservation_menu;
 
     public UserView(User user) {
         this.seasonManager = new SeasonManager();
@@ -74,8 +82,11 @@ public class UserView extends Layout{
         initializeHotelTable();
         initializeTypesTable();
         initializeSeasonsTable();
-        initializeRoomsTable();
+        initializeRoomsTable(null);
         initializeReservationsTable();
+        initializeReservationMenuOptions();
+
+
 
         btn_logout.addActionListener(e -> {
             LoginView loginView = new LoginView();
@@ -116,20 +127,24 @@ public class UserView extends Layout{
             roomAddMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    initializeRoomsTable();
+                    initializeRoomsTable(null);
                 }
             });
         });
 
         btn_addreservation.addActionListener(e -> {
-            ReservationAddMenu reservationAddMenu = new ReservationAddMenu();
-            reservationAddMenu.addWindowListener(new WindowAdapter() {
+            ReservationAddEditMenu reservationAddEditMenu = new ReservationAddEditMenu(null);
+            reservationAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     initializeReservationsTable();
-                    initializeRoomsTable();
+                    initializeRoomsTable(null);
                 }
             });
+        });
+
+        btn_search.addActionListener(e -> {
+
         });
     }
 
@@ -156,12 +171,13 @@ public class UserView extends Layout{
         this.createTable(this.default_table_season, this.tbl_season, columnsOfSeasonsTable, seasonList);
     }
 
-    private void initializeRoomsTable(){
+    private void initializeRoomsTable(ArrayList<Object[]> roomList){
         Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season",
                 "Room Adult Price", "Room Child Price", "Room Type","Room Bed Count", "Room TV", "Room Minibar",
                 "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
-
-        ArrayList<Object[]> roomList = this.roomManager.getForTable(columnsOfRoomsTable.length, this.roomManager.fetchAllRooms());
+        if (roomList == null){
+            roomList = this.roomManager.getForTable(columnsOfRoomsTable.length, this.roomManager.fetchAllRooms());
+        }
         this.createTable(this.default_table_rooms, this.tbl_rooms, columnsOfRoomsTable, roomList);
     }
 
@@ -170,5 +186,42 @@ public class UserView extends Layout{
         ArrayList<Object[]> reservationList = this.reservationManager.getForTable(columnsOfReservationsTable.length, this.reservationManager.fetchAllReservations());
 
         this.createTable(this.default_table_reservations, this.tbl_reservations, columnsOfReservationsTable, reservationList);
+    }
+
+    private void initializeReservationMenuOptions(){
+        tableRowSelect(this.tbl_reservations);
+
+        this.reservation_menu = new JPopupMenu();
+
+        this.reservation_menu.add("Edit Reservation").addActionListener(e->{
+            int selectedReservationId = this.getTableSelectedRow(tbl_reservations, 0);
+            ReservationAddEditMenu reservationAddEditMenu = new ReservationAddEditMenu(this.reservationManager.getById(selectedReservationId));
+            reservationAddEditMenu.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    initializeReservationsTable();
+                    initializeReservationMenuOptions();
+                }
+            });
+        });
+
+        this.reservation_menu.add("Delete Reservation").addActionListener(e->{
+            if (Helper.confirm("Yes")){
+                int selectedReservationId = this.getTableSelectedRow(tbl_reservations, 0);
+                int roomStock = this.roomManager.getById(this.reservationManager.getById(selectedReservationId).getRoom_id()).getRoom_stock();
+                int selectedReservationRoomId = this.reservationManager.getById(selectedReservationId).getRoom_id();
+                if (this.reservationManager.deleteReservation(selectedReservationId)){
+                    Helper.showCustomMessage("Reservation deleted.", "Operation successful.");
+                    this.roomManager.changeStock(roomStock + 1, selectedReservationRoomId);
+                    initializeRoomsTable(null);
+                    initializeReservationsTable();
+                    initializeReservationMenuOptions();
+                } else {
+                    Helper.showCustomMessage("User cancelled operation.", "Aborted by user.");
+                }
+            }
+        });
+
+        this.tbl_reservations.setComponentPopupMenu(reservation_menu);
     }
 }

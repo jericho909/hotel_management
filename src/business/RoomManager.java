@@ -77,4 +77,8 @@ public class RoomManager {
     public ArrayList<ComboItem> getRoomsByHotelId(int hotelId){
         return this.roomDao.getRoomsByHotelId(hotelId);
     }
+
+    public boolean changeStock(int newStock, int roomId){
+       return this.roomDao.changeStock(newStock, roomId);
+    }
 }

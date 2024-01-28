@@ -11,6 +11,9 @@ public class Reservation {
     String reservation_guest_phone;
     Double reservation_total_price;
 
+    public Reservation() {
+    }
+
     public Reservation(int room_id, LocalDate reservation_start_date, LocalDate reservation_end_date, String reservation_guest_name, String reservation_guest_phone, Double reservation_total_price) {
         this.room_id = room_id;
         this.reservation_start_date = reservation_start_date;

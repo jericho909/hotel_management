@@ -51,12 +51,9 @@ public class UserAddEditMenu extends Layout {
 
 
                 if (this.user == null){
-                    System.out.println("User does not exist. Adding");
                     result = this.userManager.saveUser(new User(fld_username.getText(), fld_password.getText(),userRole));
                     result = true;
                 } else {
-                    System.out.println("User exists. Editing");
-
                     this.user.setUser_name(fld_username.getText());
                     this.user.setUser_password(fld_password.getText());
                     result = this.userManager.editUser(this.user);

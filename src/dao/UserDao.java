@@ -81,10 +81,8 @@ public class UserDao {
     }
 
     public boolean editUser(User user){
-        String query = "UPDATE public.users SET user_name = ?, user_password = ?, user_role = ? WHERE id = ?"
-        ;
-        System.out.println("Editing");
-        System.out.println(user.getUser_role().toString());
+        String query = "UPDATE public.users SET user_name = ?, user_password = ?, user_role = ? WHERE id = ?";
+
 
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

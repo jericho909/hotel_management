@@ -3,6 +3,7 @@ package business;
 import core.ComboItem;
 import core.Helper;
 import dao.RoomDao;
+import entities.Hotel;
 import entities.Room;
 
 import java.sql.PreparedStatement;

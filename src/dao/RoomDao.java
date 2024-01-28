@@ -4,6 +4,7 @@ import core.ComboItem;
 import core.DbConnection;
 import entities.Hotel;
 import entities.Room;
+import entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -148,5 +149,21 @@ public class RoomDao {
         }
 
         return true;
+    }
+
+    public ArrayList<Room> queryDatabase(String query){
+        ArrayList<Room> roomArrayList = new ArrayList<>();
+
+        try {
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+
+            while (rs.next()){
+                roomArrayList.add(convertDatabaseValueToRoom(rs));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return roomArrayList;
     }
 }

@@ -70,19 +70,13 @@ public class HotelAddMenu extends Layout{
         });
     }
     private String roomStarRatingToString(String rating){
-        switch (rating){
-            case "*":
-                return "1";
-            case "**":
-                return "2";
-            case "***":
-                return "3";
-            case "****":
-                return "4";
-            case "*****":
-                return "5";
-            default:
-                return "Invalid";
-        }
+        return switch (rating) {
+            case "*" -> "1";
+            case "**" -> "2";
+            case "***" -> "3";
+            case "****" -> "4";
+            case "*****" -> "5";
+            default -> "Invalid";
+        };
     }
 }

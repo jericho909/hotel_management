@@ -79,10 +79,7 @@ public class AdminView extends Layout {
 
         this.user_menu.add("Edit User").addActionListener(e -> {
             int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
-            System.out.println(selectedUserId);
-            System.out.println(this.userManager.getById(selectedUserId).toString());
             UserAddEditMenu userAddEditMenu = new UserAddEditMenu(this.userManager.getById(selectedUserId));
-
             userAddEditMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
@@ -95,7 +92,6 @@ public class AdminView extends Layout {
         this.user_menu.add("Delete User").addActionListener(e -> {
             if (Helper.confirm("Yes")){
                 int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
-                System.out.println(selectedUserId);
                 if (this.userManager.deleteUser(selectedUserId)){
                     Helper.showCustomMessage("User deleted.", "Operation successful.");
                     initializeUserTable(null);

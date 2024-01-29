@@ -3,12 +3,9 @@ package business;
 import core.ComboItem;
 import core.Helper;
 import dao.RoomDao;
-import entities.Hotel;
 import entities.Room;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RoomManager {
@@ -83,16 +80,31 @@ public class RoomManager {
        return this.roomDao.changeStock(newStock, roomId);
     }
 
-    public ArrayList<Room> customQuery(String hotelName,String hotelCity){
-        String query = "SELECT * FROM public.rooms LEFT JOIN public.hotels ON public.rooms.hotel_id = public.hotels.id " +
-                "WHERE hotel_name = '" + hotelName + "' ";
+    public ArrayList<Room> roomFilterByCustomProperties(String hotelName, String hotelCity, LocalDate startDate, LocalDate endDate) {
 
-        if (hotelCity != null){
-            query += "AND hotel_city = '" + hotelCity + "'";
+        String query = "SELECT * FROM public.rooms " +
+                "LEFT JOIN public.hotels ON public.rooms.hotel_id = public.hotels.id " +
+                "LEFT JOIN public.reservation ON public.rooms.id = public.reservation.room_id";
+
+        if (hotelName != null) {
+            query += " WHERE public.hotels.hotel_name = '" + hotelName + "'";
+        }
+
+        if (hotelCity != null) {
+            query += (hotelName != null) ? " AND" : " WHERE";
+            query += " public.hotels.hotel_city = '" + hotelCity + "'";
+        }
+
+        if (startDate != null && endDate != null) {
+            query += (hotelName != null || hotelCity != null) ? " AND" : " WHERE";
+            query += " (public.reservation.reservation_str_date IS NULL " +
+                    "OR public.reservation.reservation_end_date IS NULL " +
+                    "OR public.reservation.reservation_str_date > '" + endDate + "' " +
+                    "OR public.reservation.reservation_end_date < '" + startDate + "')";
         }
 
         query += ";";
-        System.out.println(query);
         return this.roomDao.queryDatabase(query);
     }
+
 }

@@ -154,7 +154,9 @@ public class UserView extends Layout{
                     "Room Adult Price", "Room Child Price", "Room Type","Room Bed Count", "Room TV", "Room Minibar",
                     "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
             String selectedHotel = this.cmb_search_hotelName.getSelectedItem().toString();
-            ArrayList<Room> roomsListSearch = this.roomManager.customQuery(selectedHotel);
+            String selectedCity = this.cmb_search_hotelCity.getSelectedItem().toString();
+            System.out.println(selectedCity);
+            ArrayList<Room> roomsListSearch = this.roomManager.customQuery(selectedHotel, selectedCity);
             ArrayList<Object[]> roomRowBySearch = this.roomManager.getForTable(columnsOfRoomsTable.length, roomsListSearch);
             initializeRoomsTable(roomRowBySearch);
         });

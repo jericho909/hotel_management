@@ -3,6 +3,7 @@ package dao;
 import core.ComboItem;
 import core.DbConnection;
 import entities.Type;
+import entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,6 +102,22 @@ public class TypeDao {
         } catch (SQLException e){
 
         }
+        return typeArrayList;
+    }
+
+    public ArrayList<Type> queryDatabase(String query){
+        ArrayList<Type> typeArrayList = new ArrayList<>();
+
+        try {
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+
+            while (rs.next()){
+                typeArrayList.add(convertDatabaseValueToType(rs));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
         return typeArrayList;
     }
 }

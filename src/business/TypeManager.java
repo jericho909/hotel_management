@@ -4,7 +4,6 @@ import core.ComboItem;
 import core.Helper;
 import dao.TypeDao;
 import entities.Type;
-import entities.User;
 
 import java.util.ArrayList;
 
@@ -46,5 +45,10 @@ public class TypeManager {
             typeRowList.add(rowObject);
         }
         return typeRowList;
+    }
+
+    public ArrayList<Type> searchTypesByHotelId(int hotelId){
+        String query = "SELECT * FROM public.types WHERE hotel_id = '" + hotelId + "';";
+        return this.typeDao.queryDatabase(query);
     }
 }

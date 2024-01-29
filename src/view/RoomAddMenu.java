@@ -55,7 +55,7 @@ public class RoomAddMenu extends Layout{
         this.roomManager = new RoomManager();
         this.hotelManager = new HotelManager();
         this.add(container);
-        layoutStart((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 450, 1000);
+        layoutStart(750, 1000);
 
         for (Hotel hotel: this.hotelManager.fetchAllHotels()){
             this.cmb_hotels.addItem(new ComboItem(hotel.getId(), hotel.getHotel_name()));

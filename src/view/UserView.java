@@ -8,9 +8,12 @@ import entities.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class UserView extends Layout{
@@ -57,9 +60,10 @@ public class UserView extends Layout{
     private JScrollPane scl_reservations;
     private JComboBox cmb_search_hotelName;
     private JComboBox cmb_search_hotelCity;
-    private JTextField fld_search_startDate;
-    private JTextField fld_search_endDate;
     private JButton btn_search;
+    private JFormattedTextField fmt_fld_startDate;
+    private JFormattedTextField fmt_fld_endDate;
+    private JButton btn_searchClear;
     private ReservationManager reservationManager;
     private JPopupMenu reservation_menu;
 
@@ -85,6 +89,7 @@ public class UserView extends Layout{
         initializeRoomsTable(null);
         initializeReservationsTable();
         initializeReservationMenuOptions();
+        populateSearchComboBoxes();
 
 
 
@@ -99,6 +104,7 @@ public class UserView extends Layout{
                 @Override
                 public void windowClosed(WindowEvent e) {
                     initializeHotelTable();
+                    populateSearchComboBoxes();
                 }
             });
         });
@@ -144,7 +150,19 @@ public class UserView extends Layout{
         });
 
         btn_search.addActionListener(e -> {
+            Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season",
+                    "Room Adult Price", "Room Child Price", "Room Type","Room Bed Count", "Room TV", "Room Minibar",
+                    "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
+            String selectedHotel = this.cmb_search_hotelName.getSelectedItem().toString();
+            ArrayList<Room> roomsListSearch = this.roomManager.customQuery(selectedHotel);
+            ArrayList<Object[]> roomRowBySearch = this.roomManager.getForTable(columnsOfRoomsTable.length, roomsListSearch);
+            initializeRoomsTable(roomRowBySearch);
+        });
 
+        btn_searchClear.addActionListener(e -> {
+            cmb_search_hotelName.setSelectedItem(null);
+            cmb_search_hotelCity.setSelectedItem(null);
+            initializeRoomsTable(null);
         });
     }
 
@@ -223,5 +241,35 @@ public class UserView extends Layout{
         });
 
         this.tbl_reservations.setComponentPopupMenu(reservation_menu);
+    }
+
+    private void populateSearchComboBoxes(){
+        ArrayList<Hotel> hotelArrayList = this.hotelManager.fetchAllHotels();
+        ArrayList<String> cityList = new ArrayList<>();
+        ArrayList<String> hotelNameList = new ArrayList<>();
+
+        for (Hotel hotel: hotelArrayList){
+            if (!cityList.contains(hotel.getHotel_city())){
+                cityList.add(hotel.getHotel_city());
+            }
+            if (!hotelNameList.contains(hotel.getHotel_name())){
+                hotelNameList.add(hotel.getHotel_name());
+            }
+        }
+
+        for (String hotelCity: cityList){
+            this.cmb_search_hotelCity.addItem(hotelCity);
+        }
+
+        for (String hotelName: hotelNameList){
+            this.cmb_search_hotelName.addItem(hotelName);
+        }
+    }
+
+    private void createUIComponents() throws ParseException {
+        this.fmt_fld_startDate = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fmt_fld_startDate.setText("**/**/****");
+        this.fmt_fld_endDate = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fmt_fld_endDate.setText("**/**/****");
     }
 }

@@ -77,13 +77,17 @@ public class Helper {
         return sum;
     }
 
-    public static boolean checkDateAvailability(LocalDate startDate, LocalDate endDate, ArrayList<Reservation> reservationArrayList) {
+    public static boolean checkDateAvailability(LocalDate startDate, LocalDate endDate, ArrayList<Reservation> reservationArrayList, int roomId) {
 
         for (Reservation reservation : reservationArrayList) {
-            if ((startDate.isAfter(reservation.getReservation_start_date()) && startDate.isBefore(reservation.getReservation_end_date())) ||
-                    (endDate.isAfter(reservation.getReservation_start_date()) && endDate.isBefore(reservation.getReservation_end_date())) ||
-                    (startDate.isBefore(reservation.getReservation_start_date()) && endDate.isAfter(reservation.getReservation_end_date()))) {
-                return false; // Overlapping reservation found
+            System.out.println(reservation.getRoom_id());
+            System.out.println(roomId);
+            if (reservation.getRoom_id() == roomId){
+                if ((startDate.isAfter(reservation.getReservation_start_date()) && startDate.isBefore(reservation.getReservation_end_date())) ||
+                        (endDate.isAfter(reservation.getReservation_start_date()) && endDate.isBefore(reservation.getReservation_end_date())) ||
+                        (startDate.isBefore(reservation.getReservation_start_date()) && endDate.isAfter(reservation.getReservation_end_date()))) {
+                    return false; // Overlapping reservation found
+                }
             }
         }
         return true; // No overlapping reservation found

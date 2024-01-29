@@ -39,6 +39,7 @@ public class ReservationAddEditMenu extends Layout {
     private JTextField fld_child;
     private JLabel lbl_adult;
     private JLabel lbl_child;
+    private JButton btn_calculate;
     private ReservationManager reservationManager;
     private HotelManager hotelManager;
     private RoomManager roomManager;
@@ -106,8 +107,8 @@ public class ReservationAddEditMenu extends Layout {
                 Helper.showErrorMessage("Invalid entry.");
             } else if (Helper.calculateGuestNumber(new JTextField[]{fld_child, fld_adult}) == -1) {
                 Helper.showErrorMessage("Guests fields cannot be empty.");
-            } else if (Helper.checkDateAvailability(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                    LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), reservationArrayList)) {
+            } else if (!Helper.checkDateAvailability(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), reservationArrayList, selectedRoom.getKey())) {
                 Helper.showErrorMessage("Date not available.");
             } else if (roomStock < 1) {
                 Helper.showErrorMessage("Room out of stock.");
@@ -146,6 +147,25 @@ public class ReservationAddEditMenu extends Layout {
                 }
             }
 
+        });
+
+        btn_calculate.addActionListener(e->{
+            ComboItem selectedRoom = (ComboItem) cmb_room.getSelectedItem();
+            int roomSize = this.roomManager.getById(selectedRoom.getKey()).getRoom_bed_count();
+            if (roomSize < Helper.calculateGuestNumber(new JTextField[]{fld_adult, fld_child})){
+                Helper.showErrorMessage("Reservation exceeds room capacity. Room capacity: " + roomSize);
+            } else if (Objects.equals(fld_adult.getText(), "0") && Objects.equals(fld_child.getText(), "0")){
+                Helper.showErrorMessage("Reservation does not contain any guests.");
+            } else {
+                Double roomPriceForAdult = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_adult();
+                Double roomPriceForChild = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_child();
+                Double seasonRate = this.seasonManager.getById(this.roomManager.getById(selectedRoom.getKey()).getRoom_season_id()).getSeason_rate();
+                int numberOfAdults = Integer.parseInt(fld_adult.getText());
+                int numberOfChildren = Integer.parseInt(fld_child.getText());
+
+                Double totalPrice = ((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate;
+                lbl_totalPrice.setText("TOTAL PRICE: " + totalPrice.toString() + "$");
+            }
         });
     }
 

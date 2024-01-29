@@ -12,9 +12,11 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Array;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class UserView extends Layout{
     private DefaultTableModel default_table_hotel = new DefaultTableModel();
@@ -64,6 +66,9 @@ public class UserView extends Layout{
     private JFormattedTextField fmt_fld_startDate;
     private JFormattedTextField fmt_fld_endDate;
     private JButton btn_searchClear;
+    private JComboBox cmb_search_hotelsInType;
+    private JButton btn_search_hotel_types;
+    private JButton btn_clearSearchHotelTypes;
     private ReservationManager reservationManager;
     private JPopupMenu reservation_menu;
 
@@ -84,14 +89,16 @@ public class UserView extends Layout{
         this.lbl_welcome.setText("Welcome, " + this.user.getUser_name());
 
         initializeHotelTable();
-        initializeTypesTable();
+        initializeTypesTable(null);
         initializeSeasonsTable();
         initializeRoomsTable(null);
         initializeReservationsTable();
         initializeReservationMenuOptions();
         populateSearchComboBoxes();
-
-
+        populateTypeSearchComboBoxes();
+        cmb_search_hotelCity.setSelectedItem(null);
+        cmb_search_hotelName.setSelectedItem(null);
+        cmb_search_hotelsInType.setSelectedItem(null);
 
         btn_logout.addActionListener(e -> {
             LoginView loginView = new LoginView();
@@ -114,7 +121,7 @@ public class UserView extends Layout{
             typeAddMenu.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    initializeTypesTable();
+                    initializeTypesTable(null);
                 }
             });
         });
@@ -153,11 +160,21 @@ public class UserView extends Layout{
             Object[] columnsOfRoomsTable = {"Room ID", "Hotel Name", "Room Boarding Type", "Room Season",
                     "Room Adult Price", "Room Child Price", "Room Type","Room Bed Count", "Room TV", "Room Minibar",
                     "Room Gaming Console", "Room Square Footage", "Room Safe", "Room Projection", "Room Stock"};
-            String selectedHotel = this.cmb_search_hotelName.getSelectedItem().toString();
-            String selectedCity = this.cmb_search_hotelCity.getSelectedItem().toString();
-            System.out.println(selectedCity);
-            ArrayList<Room> roomsListSearch = this.roomManager.customQuery(selectedHotel, selectedCity);
+            LocalDate startDate = null;
+            LocalDate endDate = null;
+            String selectedHotel = this.getValueFromComboBox(cmb_search_hotelName);
+            String selectedCity = this.getValueFromComboBox(cmb_search_hotelCity);
+            if (!fmt_fld_startDate.getText().equals("  /  /    ")){
+                startDate = LocalDate.parse(fmt_fld_startDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            }
+            if (!fmt_fld_endDate.getText().equals("  /  /    ")){
+                endDate = LocalDate.parse(fmt_fld_endDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            }
+            ArrayList<Room> roomsListSearch = this.roomManager.roomFilterByCustomProperties(selectedHotel, selectedCity, startDate, endDate);
             ArrayList<Object[]> roomRowBySearch = this.roomManager.getForTable(columnsOfRoomsTable.length, roomsListSearch);
+            if (selectedHotel == null && selectedCity == null && startDate == null && endDate == null){
+                initializeRoomsTable(null);
+            }
             initializeRoomsTable(roomRowBySearch);
         });
 
@@ -165,6 +182,29 @@ public class UserView extends Layout{
             cmb_search_hotelName.setSelectedItem(null);
             cmb_search_hotelCity.setSelectedItem(null);
             initializeRoomsTable(null);
+            this.fmt_fld_startDate.setText("  /  /    ");
+            this.fmt_fld_endDate.setText("  /  /    ");
+        });
+
+        btn_search_hotel_types.addActionListener(e-> {
+            Object[] columnsOfTypesTable = {"Type ID", "Hotel Name", "Hotel Types"};
+            String hotelName = getValueFromComboBox(cmb_search_hotelsInType);
+            if (hotelName == null){
+                initializeTypesTable(null);
+            } else {
+                int selectedHotelId = this.hotelManager.queryDatabaseForId(hotelName);
+                ArrayList<entities.Type> typeListSearch = this.typeManager.searchTypesByHotelId(selectedHotelId);
+                ArrayList<Object[]> typeRowBySearch = this.typeManager.getForTable(columnsOfTypesTable.length, typeListSearch);
+                initializeTypesTable(typeRowBySearch);
+            }
+
+
+        });
+
+        btn_clearSearchHotelTypes.addActionListener(e-> {
+            cmb_search_hotelsInType.setSelectedItem(null);
+            initializeTypesTable(null);
+
         });
     }
 
@@ -177,11 +217,12 @@ public class UserView extends Layout{
         this.createTable(this.default_table_hotel, this.tbl_hotel, columnsOfHotelTable, hotelList);
     }
 
-    private void initializeTypesTable(){
+    private void initializeTypesTable(ArrayList<Object[]> typeList){
         Object[] columnsOfTypesTable = {"Type ID", "Hotel Name", "Hotel Types"};
-
-        ArrayList<Object[]> typesList = this.typeManager.getForTable(columnsOfTypesTable.length, this.typeManager.fetchAllTypes());
-        this.createTable(this.default_table_types, this.tbl_types, columnsOfTypesTable, typesList);
+        if (typeList == null){
+            typeList = this.typeManager.getForTable(columnsOfTypesTable.length, this.typeManager.fetchAllTypes());
+        }
+        this.createTable(this.default_table_types, this.tbl_types, columnsOfTypesTable, typeList);
     }
 
     private void initializeSeasonsTable(){
@@ -266,6 +307,24 @@ public class UserView extends Layout{
         for (String hotelName: hotelNameList){
             this.cmb_search_hotelName.addItem(hotelName);
         }
+    }
+
+    private void populateTypeSearchComboBoxes(){
+        HashSet<String> hotelNames = new HashSet<>();
+        ArrayList<Hotel> hotelArrayList = this.hotelManager.fetchAllHotels();
+        for (Hotel hotel: hotelArrayList){
+            hotelNames.add(hotel.getHotel_name());
+        }
+        for (String hotelName: hotelNames){
+            cmb_search_hotelsInType.addItem(hotelName);
+        }
+    }
+
+    private String getValueFromComboBox(JComboBox comboBox){
+        if (comboBox.getSelectedItem() == null){
+            return null;
+        }
+       return comboBox.getSelectedItem().toString();
     }
 
     private void createUIComponents() throws ParseException {

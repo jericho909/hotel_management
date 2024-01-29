@@ -83,8 +83,16 @@ public class RoomManager {
        return this.roomDao.changeStock(newStock, roomId);
     }
 
-    public ArrayList<Room> customQuery(String hotelName){
-        String query = "SELECT * FROM public.rooms LEFT JOIN public.hotels ON public.rooms.hotel_id = public.hotels.id WHERE hotel_name = '" + hotelName + "';";
+    public ArrayList<Room> customQuery(String hotelName,String hotelCity){
+        String query = "SELECT * FROM public.rooms LEFT JOIN public.hotels ON public.rooms.hotel_id = public.hotels.id " +
+                "WHERE hotel_name = '" + hotelName + "' ";
+
+        if (hotelCity != null){
+            query += "AND hotel_city = '" + hotelCity + "'";
+        }
+
+        query += ";";
+        System.out.println(query);
         return this.roomDao.queryDatabase(query);
     }
 }

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project aims to create a Tourism Agency Management System for as a project for Patika+ Full Stack Web Developer Bootcamp. The system is designed to facilitate daily operations, enhance efficiency in managing hotel partnerships, and optimize customer reservation processes.
+This project aims to create a Tourism Agency Management System as a project for Patika+ Full Stack Web Developer Bootcamp. The system is designed to facilitate daily operations, enhance efficiency in managing hotel partnerships, and optimize customer reservation processes.
 
 ## Features
 

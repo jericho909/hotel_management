@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project aims to create a Tourism Agency Management System for as a project for Patika+ Full Stack Web Developer Bootcamp. The system is designed to facilitate daily operations, enhance efficiency in managing hotel partnerships, and optimize customer reservation processes.
+This project aims to create a Tourism Agency Management System as a project for Patika+ Full Stack Web Developer Bootcamp. The system is designed to facilitate daily operations, enhance efficiency in managing hotel partnerships, and optimize customer reservation processes.
 
 ## Features
 
@@ -82,7 +82,7 @@ This project aims to create a Tourism Agency Management System for as a project 
 
 1. Clone into this repo.
 2. Install the Java dependencies.
-3. Create a database in Postgres and restore the database with the provided file in the DB folder.
+3. Create a database in PostgreSQL and restore the database with the provided file in the DB folder.
 4. Open up your favorite IDE and run App.java (Or use javac in your terminal and type java App).
 
 ## Technologies Used
@@ -90,6 +90,14 @@ This project aims to create a Tourism Agency Management System for as a project 
 -   Frontend: Swing UI (Java)
 -   Backend: Java
 -   Database: PostgreSQL
+
+## Video Demo
+
+
+
+https://github.com/jericho909/hotel_management/assets/101925116/d959312c-5b7f-4dac-8d45-164c8fede57c
+
+
 
 ## License
 

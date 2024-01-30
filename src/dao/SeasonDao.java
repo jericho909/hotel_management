@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class SeasonDao {
 
     public final Connection connection;
-
+    //the same with the hotelDao, the methods unique to this dao will be explained below.
+    // if no explanation is given you can look them up in hoteldao
     public SeasonDao(){
         this.connection = DbConnection.getInstance();
     }
@@ -99,7 +100,8 @@ public class SeasonDao {
             preparedStatement.setInt(1, hotelId);
 
             ResultSet rs = preparedStatement.executeQuery();
-
+            //this is for custom formatting of the values in the table, so the UI will be more informative
+            //take note that the comboItem structure is still the name but the str contains more info
             while (rs.next()){
                 id = rs.getInt("id");
                 seasonName = rs.getString("season_name");

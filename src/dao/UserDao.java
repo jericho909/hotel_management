@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class UserDao {
 
     public final Connection connection;
-
+    //the same with the hotelDao, the methods unique to this dao will be explained below.
+    // if no explanation is given you can look them up in hoteldao
 
     public UserDao() {
         this.connection = DbConnection.getInstance();
@@ -132,7 +133,7 @@ public class UserDao {
         return user;
     }
 
-    public ArrayList<User> queryDatabase(String query){
+    public ArrayList<User> customQueryFetchDatabase(String query){
         ArrayList<User> userArrayList = new ArrayList<>();
 
         try {

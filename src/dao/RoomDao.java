@@ -2,9 +2,7 @@ package dao;
 
 import core.ComboItem;
 import core.DbConnection;
-import entities.Hotel;
 import entities.Room;
-import entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +16,8 @@ public class RoomDao {
     public RoomDao() {
         this.connection = DbConnection.getInstance();
     }
-
+    //the same with the hotelDao, the methods unique to this dao will be explained below.
+    // if no explanation is given you can look them up in hoteldao
     public ArrayList<Room> fetchAllRooms(){
         ArrayList<Room> roomArrayList = new ArrayList<>();
 
@@ -136,6 +135,8 @@ public class RoomDao {
         return roomArrayList;
     }
 
+    //for increasing the room stock if there is a reservation cancellation,
+    // and decreasing the room stock if there is a reservation made
     public boolean changeStock(int newStock, int roomId){
         String query = " UPDATE public.rooms SET room_stock = ? WHERE id = ? ";
 
@@ -151,7 +152,7 @@ public class RoomDao {
         return true;
     }
 
-    public ArrayList<Room> queryDatabase(String query){
+    public ArrayList<Room> customFetchQueryDatabase(String query){
         ArrayList<Room> roomArrayList = new ArrayList<>();
 
         try {

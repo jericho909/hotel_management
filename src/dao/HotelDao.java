@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class HotelDao {
     public final Connection connection;
 
-
+    //create the connection with the database
     public HotelDao() {
         this.connection = DbConnection.getInstance();
     }
-
+    //get all the hotels
     public ArrayList<Hotel> fetchAllHotels(){
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
 
@@ -35,6 +35,7 @@ public class HotelDao {
         return hotelArrayList;
     }
 
+    //convert raw db values to actual hotel classes
     public Hotel convertDatabaseValueToHotel(ResultSet rs) throws SQLException{
         Hotel hotel = new Hotel();
         hotel.setId(rs.getInt("id"));
@@ -55,7 +56,7 @@ public class HotelDao {
         return hotel;
 
     }
-
+    //fetch the hotel with the given id
     public Hotel getById(int hotelId){
         Hotel hotel = null;
         String query = "SELECT * FROM public.hotels WHERE id = ?";
@@ -74,7 +75,7 @@ public class HotelDao {
         }
         return hotel;
     }
-
+    //for saving the hotel to the db
     public boolean saveHotel(Hotel hotel){
         String query = "INSERT INTO public.hotels (hotel_name, hotel_city, hotel_adress, hotel_email, hotel_phone, " +
                 "hotel_star, hotel_freeparking, hotel_freewifi, hotel_pool, hotel_gym, hotel_concierge, hotel_spa, " +
@@ -104,7 +105,7 @@ public class HotelDao {
         return true;
     }
 
-
+    //sometimes we need custom queries, so we use this boilerplate, the query will be given by the manager class
     public ArrayList<Hotel> customFetchQueryDatabase(String query){
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
 
@@ -121,6 +122,7 @@ public class HotelDao {
         return hotelArrayList;
     }
 
+    //get the hotel id with the given hotel name
     public int queryDatabaseForId(String hotelName) {
         String query = "SELECT id FROM public.hotels WHERE hotel_name = ?";
         int id = -1; // Default value if no hotel is found

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class ReservationDao {
 
     public final Connection connection;
-
+    //the same with the hotelDao, the methods unique to this dao will be explained below.
+    // if no explanation is given you can look them up in hoteldao
     public ReservationDao() {
         this.connection = DbConnection.getInstance();
     }
@@ -86,7 +87,7 @@ public class ReservationDao {
         }
         return true;
     }
-
+    //editing the reservation passed down by the manager
     public boolean editReservation(Reservation reservation){
         String query = "UPDATE public.reservation SET room_id = ?, reservation_str_date = ?, reservation_end_date = ?, " +
                 "reservation_guest_name = ?, reservation_guest_phone = ?, reservation_total_price = ? WHERE id = ?";
@@ -106,7 +107,7 @@ public class ReservationDao {
         }
         return true;
     }
-
+    //deleting the reservation by the id passed down by the manager
     public boolean deleteReservation(int reservationId){
         String query = "DELETE FROM public.reservation WHERE id = ?";
         try {

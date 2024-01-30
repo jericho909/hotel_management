@@ -13,7 +13,7 @@ public class SeasonManager {
 
     private final SeasonDao seasonDao;
     private final HotelManager hotelManager;
-
+    //mostly same as hotelManager, if no comment is given check hotelManager for explanation
     public SeasonManager() {
         this.hotelManager = new HotelManager();
         this.seasonDao = new SeasonDao();

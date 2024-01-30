@@ -4,15 +4,12 @@ import core.Helper;
 import dao.UserDao;
 import entities.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserManager {
 
     private final UserDao userDao;
-
+    //mostly same as hotelManager, if no comment is given check hotelManager for explanation
     public UserManager() {
         this.userDao = new UserDao();
     }
@@ -69,7 +66,7 @@ public class UserManager {
 
     public ArrayList<User> searchUsersByRole(String userRole){
         String query = "SELECT * FROM public.users WHERE user_role = '" + userRole + "';";
-        return this.userDao.queryDatabase(query);
+        return this.userDao.customQueryFetchDatabase(query);
     }
 
 

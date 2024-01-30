@@ -14,6 +14,7 @@ public class RoomManager {
     private final TypeManager typeManager;
     private final SeasonManager seasonManager;
 
+    //mostly same as hotelManager, if no comment is given check hotelManager for explanation
     public RoomManager(){
         this.roomDao = new RoomDao();
         this.hotelManager = new HotelManager();
@@ -44,6 +45,7 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = room.getId();
+            //we want the names to be displayed in the UI for better UX. so we get the names not the ids
             rowObject[i++] = this.hotelManager.getById(room.getHotel_id()).getHotel_name();
             rowObject[i++] = this.typeManager.getById(room.getRoom_hotel_type_id()).getType_hotel_name();
             rowObject[i++] = this.seasonManager.getById(room.getRoom_season_id()).getSeason_name();
@@ -80,12 +82,14 @@ public class RoomManager {
        return this.roomDao.changeStock(newStock, roomId);
     }
 
+
+    //dynamically generated SQL queries for filtering values
     public ArrayList<Room> roomFilterByCustomProperties(String hotelName, String hotelCity, LocalDate startDate, LocalDate endDate) {
 
         String query = "SELECT * FROM public.rooms " +
                 "LEFT JOIN public.hotels ON public.rooms.hotel_id = public.hotels.id " +
                 "LEFT JOIN public.reservation ON public.rooms.id = public.reservation.room_id";
-
+        //if all the parameters from the method are null we simply fetch all the rooms
         if (hotelName != null) {
             query += " WHERE public.hotels.hotel_name = '" + hotelName + "'";
         }
@@ -102,9 +106,9 @@ public class RoomManager {
                     "OR public.reservation.reservation_str_date > '" + endDate + "' " +
                     "OR public.reservation.reservation_end_date < '" + startDate + "')";
         }
-
+        //don't forget the semicolon!!!
         query += ";";
-        return this.roomDao.queryDatabase(query);
+        return this.roomDao.customFetchQueryDatabase(query);
     }
 
 }

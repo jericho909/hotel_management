@@ -19,6 +19,7 @@ public class ReservationManager {
         this.roomDao = new RoomDao();
         this.hotelDao = new HotelDao();
     }
+    //mostly same as hotelManager, if no comment is given check hotelManager for explanation
 
     public Reservation getById(int reservationId){
         return this.reservationDao.getById(reservationId);
@@ -31,6 +32,7 @@ public class ReservationManager {
 
         return this.reservationDao.saveReservation(reservation);
     }
+    //cannot edit a value if it doesn't exist
     public boolean editReservation(Reservation reservation){
         if (this.getById(reservation.getId())  == null ){
             Helper.showErrorMessage("ID not found.");
@@ -39,6 +41,7 @@ public class ReservationManager {
         return this.reservationDao.editReservation(reservation);
     }
 
+    //cannot delete a value from a db if it doesn't exist
     public boolean deleteReservation(int reservationId){
         if (this.getById(reservationId) == null){
             Helper.showErrorMessage("Cannot find ID");

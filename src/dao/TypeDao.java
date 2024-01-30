@@ -3,7 +3,6 @@ package dao;
 import core.ComboItem;
 import core.DbConnection;
 import entities.Type;
-import entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,8 @@ import java.util.ArrayList;
 public class TypeDao {
 
     public final Connection connection;
-
+    //the same with the hotelDao, the methods unique to this dao will be explained below.
+    // if no explanation is given you can look them up in hoteldao
     public TypeDao(){
         this.connection = DbConnection.getInstance();
     }
@@ -105,7 +105,7 @@ public class TypeDao {
         return typeArrayList;
     }
 
-    public ArrayList<Type> queryDatabase(String query){
+    public ArrayList<Type> customFetchQueryDatabase(String query){
         ArrayList<Type> typeArrayList = new ArrayList<>();
 
         try {

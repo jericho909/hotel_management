@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class TypeManager {
     private final TypeDao typeDao;
     private final HotelManager hotelManager;
-
+    //mostly same as hotelManager, if no comment is given check hotelManager for explanation
     public TypeManager() {
         this.typeDao = new TypeDao();
         this.hotelManager = new HotelManager();
@@ -49,6 +49,6 @@ public class TypeManager {
 
     public ArrayList<Type> searchTypesByHotelId(int hotelId){
         String query = "SELECT * FROM public.types WHERE hotel_id = '" + hotelId + "';";
-        return this.typeDao.queryDatabase(query);
+        return this.typeDao.customFetchQueryDatabase(query);
     }
 }

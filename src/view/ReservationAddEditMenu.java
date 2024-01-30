@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class ReservationAddEditMenu extends Layout {
     private JPanel container;
     private JComboBox cmb_hotels;
@@ -122,13 +124,14 @@ public class ReservationAddEditMenu extends Layout {
                 Helper.showErrorMessage("Room out of stock.");
             } else {
                 //every field is valid, do the price calculation
+                int timeOfStay = (int) DAYS.between(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 Double roomPriceForAdult = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_adult();
                 Double roomPriceForChild = this.roomManager.getById(selectedRoom.getKey()).getRoom_price_child();
                 Double seasonRate = this.seasonManager.getById(this.roomManager.getById(selectedRoom.getKey()).getRoom_season_id()).getSeason_rate();
                 int numberOfAdults = Integer.parseInt(fld_adult.getText());
                 int numberOfChildren = Integer.parseInt(fld_child.getText());
 
-                Double totalPrice = ((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate;
+                Double totalPrice = (((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate) * timeOfStay;
                 if (this.reservation == null){
                     //if reservation is null, this means this is a new reservation, call the save method
                     result = this.reservationManager.saveReservation(new Reservation(
@@ -164,6 +167,7 @@ public class ReservationAddEditMenu extends Layout {
         btn_calculate.addActionListener(e->{
             //to show the user the room price before confirming the reservation
             ComboItem selectedRoom = (ComboItem) cmb_room.getSelectedItem();
+            int timeOfStay = (int) DAYS.between(LocalDate.parse(fmt_reservationStartDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(fmt_reservationEndDate.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             int roomSize = this.roomManager.getById(selectedRoom.getKey()).getRoom_bed_count();
             if (roomSize < Helper.calculateGuestNumber(new JTextField[]{fld_adult, fld_child})){
                 Helper.showErrorMessage("Reservation exceeds room capacity. Room capacity: " + roomSize);
@@ -176,7 +180,7 @@ public class ReservationAddEditMenu extends Layout {
                 int numberOfAdults = Integer.parseInt(fld_adult.getText());
                 int numberOfChildren = Integer.parseInt(fld_child.getText());
 
-                Double totalPrice = ((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate;
+                Double totalPrice = (((numberOfAdults * roomPriceForAdult) + (numberOfChildren * roomPriceForChild)) * seasonRate) * timeOfStay;
                 lbl_totalPrice.setText("TOTAL PRICE: " + totalPrice.toString() + "$");
             }
         });

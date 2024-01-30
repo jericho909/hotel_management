@@ -115,6 +115,8 @@ public class UserView extends Layout{
                 @Override
                 public void windowClosed(WindowEvent e) {
                     initializeHotelTable();
+                    cmb_search_hotelCity.removeAllItems();
+                    cmb_search_hotelName.removeAllItems();
                     populateSearchComboBoxes();
                 }
             });
@@ -126,6 +128,8 @@ public class UserView extends Layout{
                 @Override
                 public void windowClosed(WindowEvent e) {
                     initializeTypesTable(null);
+                    cmb_search_hotelsInType.removeAllItems();
+                    populateTypeSearchComboBoxes();
                 }
             });
         });

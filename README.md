@@ -91,6 +91,14 @@ This project aims to create a Tourism Agency Management System for as a project 
 -   Backend: Java
 -   Database: PostgreSQL
 
+## Video Demo
+
+
+
+https://github.com/jericho909/hotel_management/assets/101925116/d959312c-5b7f-4dac-8d45-164c8fede57c
+
+
+
 ## License
 
 This project is licensed under the MIT License.

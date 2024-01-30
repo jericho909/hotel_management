@@ -28,6 +28,7 @@ public class TypeAddMenu extends Layout {
 
         this.layoutStart(500,500);
 
+        //populate the hotel selection boxes
         for (Hotel hotel: this.hotelManager.fetchAllHotels()){
             this.cmb_hotelnames.addItem(new ComboItem(hotel.getId(), hotel.getHotel_name()));
         }

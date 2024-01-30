@@ -69,6 +69,8 @@ public class HotelAddMenu extends Layout{
             }
         });
     }
+
+    //switch case for converting user selection to string
     private String roomStarRatingToString(String rating){
         return switch (rating) {
             case "*" -> "1";

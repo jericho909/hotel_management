@@ -57,6 +57,7 @@ public class RoomAddMenu extends Layout{
         this.add(container);
         layoutStart(750, 1000);
 
+        //populate the hotel combo box
         for (Hotel hotel: this.hotelManager.fetchAllHotels()){
             this.cmb_hotels.addItem(new ComboItem(hotel.getId(), hotel.getHotel_name()));
             cmb_hotels.setSelectedItem(null);
@@ -69,6 +70,7 @@ public class RoomAddMenu extends Layout{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                //dynamically populate seasons with the selection of a hotel
                 cmb_hoteltypes.removeAllItems();
                 cmb_hotelseasons.removeAllItems();
                 String selectedHotelName = cmb_hotels.getSelectedItem().toString();
@@ -86,7 +88,7 @@ public class RoomAddMenu extends Layout{
         });
 
         btn_save.addActionListener(e-> {
-            if (Helper.emptyFieldChecker(new JTextField[]{fld_adultprice, fld_childprice, fld_bedcount, fld_squarefoot, fld_stock})){
+            if (Helper.emptyFieldChecker(new JTextField[]{fld_adultprice, fld_childprice, fld_bedcount, fld_squarefoot, fld_stock})){ //checks for the empty fields
                 Helper.showErrorMessage("Please fill all the fields.");
             } else {
                 boolean result = false;

@@ -35,12 +35,14 @@ public class SeasonAddMenu extends Layout {
         this.add(container);
         this.layoutStart(750, 750);
 
+
+        //populate hotel names
         for (Hotel hotel: this.hotelManager.fetchAllHotels()){
             this.cmb_hotelnames.addItem(new ComboItem(hotel.getId(), hotel.getHotel_name()));
         }
 
         btn_save.addActionListener(e -> {
-            if (Helper.emptyFieldChecker(new JTextField[]{fld_seasonName, fld_seasonRate, fmt_fld_seasonend, fmt_fld_seasonstart})){
+            if (Helper.emptyFieldChecker(new JTextField[]{fld_seasonName, fld_seasonRate, fmt_fld_seasonend, fmt_fld_seasonstart})){ //check for empty fields
                 Helper.showErrorMessage("Please fill all the fields.");
             } else {
                 boolean result = false;
@@ -56,6 +58,8 @@ public class SeasonAddMenu extends Layout {
         });
     }
 
+
+    //for formatting the date fields
     private void createUIComponents() throws ParseException {
         this.fmt_fld_seasonstart = new JFormattedTextField(new MaskFormatter("##/##/####"));
         this.fmt_fld_seasonstart.setText("01/01/2024");

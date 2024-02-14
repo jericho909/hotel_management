@@ -83,7 +83,8 @@ This project aims to create a Tourism Agency Management System as a project for 
 1. Clone into this repo.
 2. Install the Java dependencies.
 3. Create a database in PostgreSQL and restore the database with the provided file in the DB folder.
-4. Open up your favorite IDE and run App.java (Or use javac in your terminal and type java App).
+4. Change the DB values in "/src/core/DbConnection" to your own PostgreSQL username and password and change the Localhost port if needed.
+5. Open up your favorite IDE and run App.java.
 
 ## Technologies Used
 
